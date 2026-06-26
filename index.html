@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumière Beauty Studio</title>
+      <link rel="icon" type="image/png" href="assets/tumakazi-favicon.webp">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── VARIABLES ─────────────────────────────────────────── */
+    :root {
+      --rose:     #c9847e;
+      --rose-dk:  #a66560;
+      --rose-lt:  #f5e8e6;
+      --gold:     #c9a96e;
+      --gold-lt:  #f7f0e4;
+      --cream:    #faf7f4;
+      --charcoal: #2c2826;
+      --gray:     #6e6460;
+      --gray-lt:  #ede8e5;
+      --white:    #ffffff;
+      --shadow-sm: 0 2px 12px rgba(44,40,38,.07);
+      --shadow-md: 0 8px 32px rgba(44,40,38,.10);
+      --shadow-lg: 0 20px 60px rgba(44,40,38,.13);
+      --radius:   12px;
+      --radius-lg:20px;
+      --transition: .35s cubic-bezier(.4,0,.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--charcoal); line-height: 1.7; overflow-x: hidden; }
+    img  { max-width: 100%; display: block; }
+    a    { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    input, textarea, select {
+      font-family: inherit; border: 1.5px solid var(--gray-lt);
+      border-radius: var(--radius); padding: .75rem 1rem;
+      width: 100%; font-size: .95rem; background: var(--white);
+      color: var(--charcoal); transition: border-color var(--transition); outline: none;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--rose); }
+
+    /* ─── TYPOGRAPHY ─────────────────────────────────────────── */
+    h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; font-weight: 500; line-height: 1.2; }
+    h1 { font-size: clamp(2.8rem,7vw,5rem); }
+    h2 { font-size: clamp(2rem,5vw,3.2rem); }
+    h3 { font-size: clamp(1.3rem,3vw,1.8rem); }
+    .label { font-size:.72rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--rose); }
+    .section-head { text-align:center; max-width:580px; margin:0 auto 3.5rem; }
+    .section-head h2 { margin:.5rem 0 1rem; }
+    .section-head p  { color:var(--gray); font-size:1.05rem; }
+
+    /* ─── LAYOUT ─────────────────────────────────────────────── */
+    section { padding:6rem 1.5rem; }
+    .container { max-width:1200px; margin:0 auto; }
+    .grid-3 { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:2rem; }
+    .grid-4 { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1.5rem; }
+
+    /* ─── BUTTONS ─────────────────────────────────────────────── */
+    .btn {
+      display:inline-flex; align-items:center; gap:.55rem;
+      padding:.8rem 2rem; border-radius:50px; font-size:.9rem;
+      font-weight:500; letter-spacing:.04em; transition:all var(--transition);
+    }
+    .btn-primary { background:var(--rose); color:var(--white); }
+    .btn-primary:hover { background:var(--rose-dk); transform:translateY(-2px); box-shadow:0 8px 24px rgba(201,132,126,.35); }
+    .btn-outline { background:transparent; border:1.5px solid var(--rose); color:var(--rose); }
+    .btn-outline:hover { background:var(--rose); color:var(--white); transform:translateY(-2px); }
+    .btn-gold { background:var(--gold); color:var(--white); }
+    .btn-gold:hover { background:#b8944f; transform:translateY(-2px); }
+    .btn-ghost { background:rgba(255,255,255,.15); color:var(--white); border:1.5px solid rgba(255,255,255,.35); backdrop-filter:blur(8px); }
+    .btn-ghost:hover { background:rgba(255,255,255,.25); }
+    .btn-sm { padding:.4rem .9rem; font-size:.78rem; }
+    .btn-danger { border:1.5px solid #fadbd8; color:#c0392b; }
+    .btn-danger:hover { background:#c0392b; color:var(--white); }
+    .btn-edit { border:1.5px solid var(--gold); color:var(--gold); }
+    .btn-edit:hover { background:var(--gold); color:var(--white); }
+
+    /* ─── NAVIGATION ─────────────────────────────────────────── */
+    #navbar { position:fixed; top:0; left:0; right:0; z-index:900; padding:1rem 1.5rem; transition:all var(--transition); }
+    #navbar.scrolled { background:rgba(250,247,244,.96); backdrop-filter:blur(12px); box-shadow:var(--shadow-sm); padding:.65rem 1.5rem; }
+    .nav-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.55rem; font-weight:500; color:var(--white); transition:color var(--transition); }
+    #navbar.scrolled .nav-logo { color:var(--charcoal); }
+    .nav-links { display:flex; gap:2.2rem; list-style:none; }
+    .nav-links a { font-size:.88rem; font-weight:500; letter-spacing:.04em; color:rgba(255,255,255,.88); transition:color var(--transition); }
+    #navbar.scrolled .nav-links a { color:var(--charcoal); }
+    .nav-links a:hover { color:var(--rose); }
+    .nav-cta { display:flex; gap:.75rem; }
+    .nav-cta .btn { padding:.55rem 1.4rem; font-size:.85rem; }
+    #navbar .btn-outline { border-color:rgba(255,255,255,.6); color:var(--white); }
+    #navbar.scrolled .btn-outline { border-color:var(--rose); color:var(--rose); }
+    .hamburger { display:none; flex-direction:column; gap:5px; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--white); border-radius:2px; transition:all var(--transition); }
+    #navbar.scrolled .hamburger span { background:var(--charcoal); }
+    .mobile-menu { display:none; position:fixed; inset:0; background:var(--cream); z-index:950; flex-direction:column; align-items:center; justify-content:center; gap:2rem; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--charcoal); }
+    .mobile-close { position:absolute; top:1.5rem; right:1.5rem; font-size:1.5rem; cursor:pointer; color:var(--charcoal); }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    #hero { min-height:100vh; background:linear-gradient(160deg,#2c1e1b 0%,#4a2f2a 45%,#6b3d36 100%); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:6rem 1.5rem 4rem; }
+    #hero::before { content:''; position:absolute; inset:0; background:url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1600&auto=format') center/cover no-repeat; opacity:.18; }
+    .hero-content { position:relative; z-index:2; text-align:center; color:var(--white); max-width:800px; }
+    .hero-content .label { color:var(--gold); margin-bottom:1.5rem; }
+    .hero-content h1 { line-height:1.1; margin-bottom:1.5rem; }
+    .hero-content h1 em { color:var(--rose); font-style:italic; }
+    .hero-content p { font-size:1.15rem; color:rgba(255,255,255,.8); max-width:520px; margin:0 auto 2.5rem; }
+    .hero-actions { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .hero-scroll { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:.5rem; color:rgba(255,255,255,.5); font-size:.75rem; letter-spacing:.1em; animation:bounce 2s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* ─── VSL ────────────────────────────────────────────────── */
+    #vsl { background:var(--white); }
+    .vsl-wrapper { max-width:860px; margin:0 auto; }
+    .vsl-embed { position:relative; padding-bottom:56.25%; border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-lg); }
+    .vsl-embed iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+    .vsl-caption { text-align:center; margin-top:2rem; font-size:1.05rem; color:var(--gray); font-style:italic; font-family:'Cormorant Garamond',serif; }
+
+    /* ─── SLIDER ─────────────────────────────────────────────── */
+    #gallery { background:var(--cream); overflow:hidden; }
+    .slider-container { position:relative; }
+    .slider-track { display:flex; transition:transform .6s cubic-bezier(.4,0,.2,1); }
+    .slide { min-width:100%; position:relative; border-radius:var(--radius-lg); overflow:hidden; }
+    .slide img { width:100%; height:480px; object-fit:cover; }
+    .slide-caption { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(44,40,38,.75)); padding:2.5rem 2rem 1.8rem; color:var(--white); }
+    .slide-caption h3 { font-size:1.6rem; margin-bottom:.3rem; }
+    .slide-caption p  { font-size:.9rem; opacity:.85; }
+    .slider-btn { position:absolute; top:50%; transform:translateY(-50%); width:48px; height:48px; background:rgba(255,255,255,.9); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-md); z-index:5; transition:all var(--transition); }
+    .slider-btn:hover { background:var(--rose); color:var(--white); }
+    .slider-btn.prev { left:1rem; }
+    .slider-btn.next { right:1rem; }
+    .slider-dots { display:flex; justify-content:center; gap:.5rem; margin-top:1.5rem; }
+    .dot { width:8px; height:8px; border-radius:50%; background:var(--gray-lt); transition:all var(--transition); cursor:pointer; }
+    .dot.active { background:var(--rose); width:24px; border-radius:4px; }
+
+    /* ─── PRODUCTS ───────────────────────────────────────────── */
+    #products { background:var(--white); }
+    .product-card { background:var(--cream); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); transition:all var(--transition); display:flex; flex-direction:column; }
+    .product-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-md); }
+    .product-img { position:relative; overflow:hidden; aspect-ratio:1; background:var(--gray-lt); }
+    .product-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+    .product-card:hover .product-img img { transform:scale(1.05); }
+    .product-badge { position:absolute; top:.75rem; left:.75rem; background:var(--rose); color:var(--white); font-size:.7rem; font-weight:600; letter-spacing:.08em; padding:.25rem .7rem; border-radius:50px; }
+    .product-body { padding:1.25rem 1.25rem 1.5rem; flex:1; display:flex; flex-direction:column; }
+    .product-body h3 { font-size:1.2rem; margin-bottom:.4rem; }
+    .product-body p  { font-size:.88rem; color:var(--gray); flex:1; margin-bottom:1rem; }
+    .product-price   { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:500; color:var(--charcoal); margin-bottom:1rem; }
+    .product-actions { display:flex; gap:.6rem; flex-wrap:wrap; }
+    .product-actions .btn { flex:1; justify-content:center; padding:.65rem 1rem; font-size:.83rem; }
+
+    /* ─── SERVICES ───────────────────────────────────────────── */
+    #services { background:var(--rose-lt); }
+    .service-card { background:var(--white); border-radius:var(--radius-lg); padding:2rem; box-shadow:var(--shadow-sm); transition:all var(--transition); display:flex; flex-direction:column; }
+    .service-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-md); }
+    .service-icon { width:56px; height:56px; background:var(--rose-lt); border-radius:var(--radius); display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; }
+    .service-icon svg { width:26px; height:26px; stroke:var(--rose); }
+    .service-card h3 { margin-bottom:.5rem; }
+    .service-card p  { font-size:.9rem; color:var(--gray); flex:1; margin-bottom:1.25rem; }
+    .service-duration { display:flex; align-items:center; gap:.4rem; font-size:.8rem; color:var(--gray); margin-bottom:1rem; }
+    .service-price    { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--charcoal); margin-bottom:1.25rem; }
+
+    /* ─── APPOINTMENT MODAL ──────────────────────────────────── */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(44,40,38,.55); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:1rem; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--white); border-radius:var(--radius-lg); padding:2.5rem; width:100%; max-width:520px; box-shadow:var(--shadow-lg); position:relative; max-height:90vh; overflow-y:auto; }
+    .modal-close { position:absolute; top:1.2rem; right:1.2rem; width:32px; height:32px; background:var(--gray-lt); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background var(--transition); }
+    .modal-close:hover { background:var(--rose-lt); }
+    .form-group { margin-bottom:1.25rem; }
+    .form-group label { display:block; font-size:.85rem; font-weight:500; margin-bottom:.4rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .modal-footer { margin-top:1.5rem; display:flex; gap:.75rem; }
+    .modal-footer .btn { flex:1; justify-content:center; }
+
+    /* ─── REVIEWS ────────────────────────────────────────────── */
+    #reviews { background:var(--white); }
+    .reviews-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.5rem; }
+    .review-card { background:var(--cream); border-radius:var(--radius-lg); padding:1.75rem; box-shadow:var(--shadow-sm); transition:all var(--transition); }
+    .review-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); }
+    .review-stars { display:flex; gap:.25rem; margin-bottom:.75rem; }
+    .review-stars svg { width:18px; height:18px; }
+    .review-text   { font-size:.95rem; color:var(--gray); font-style:italic; margin-bottom:1.25rem; line-height:1.75; }
+    .review-author { display:flex; align-items:center; gap:.75rem; }
+    .review-avatar { width:44px; height:44px; border-radius:50%; background:var(--rose-lt); display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--rose); }
+    .review-author-info strong { display:block; font-size:.92rem; }
+    .review-author-info span   { font-size:.78rem; color:var(--gray); }
+
+    /* ─── COMMENTS ───────────────────────────────────────────── */
+    #comments { background:var(--gold-lt); }
+    .comment-form { background:var(--white); border-radius:var(--radius-lg); padding:2.5rem; box-shadow:var(--shadow-sm); max-width:680px; margin:0 auto 3rem; }
+    .comment-form h3 { margin-bottom:1.5rem; }
+    .comment-list { display:flex; flex-direction:column; gap:1.25rem; max-width:860px; margin:0 auto; }
+    .comment-item { background:var(--white); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm); display:flex; gap:1rem; }
+    .comment-avatar { width:44px; height:44px; border-radius:50%; background:var(--rose-lt); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--rose); }
+    .comment-body strong { font-size:.92rem; }
+    .comment-body time   { font-size:.78rem; color:var(--gray); margin-left:.5rem; }
+    .comment-body p      { font-size:.9rem; color:var(--gray); margin-top:.35rem; }
+
+    /* ─── BLOG SECTION ───────────────────────────────────────── */
+    #blog { background:var(--white); }
+    .blog-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:2rem; }
+    .blog-card { background:var(--cream); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); transition:all var(--transition); display:flex; flex-direction:column; }
+    .blog-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-md); }
+    .blog-thumb { width:100%; height:190px; object-fit:cover; background:var(--gray-lt); }
+    .blog-thumb-placeholder { width:100%; height:190px; background:linear-gradient(135deg,var(--rose-lt),var(--gold-lt)); display:flex; align-items:center; justify-content:center; }
+    .blog-thumb-placeholder svg { width:40px; height:40px; stroke:var(--rose); opacity:.5; }
+    .blog-body { padding:1.5rem; flex:1; display:flex; flex-direction:column; }
+    .blog-meta { font-size:.75rem; color:var(--gray); letter-spacing:.06em; text-transform:uppercase; margin-bottom:.75rem; }
+    .blog-body h3 { font-size:1.25rem; margin-bottom:.6rem; line-height:1.35; }
+    .blog-body p  { font-size:.88rem; color:var(--gray); flex:1; margin-bottom:1.25rem; }
+    .blog-body a  { font-size:.85rem; font-weight:600; color:var(--rose); display:inline-flex; align-items:center; gap:.4rem; letter-spacing:.04em; }
+    .blog-body a:hover { color:var(--rose-dk); }
+    #blog-error { text-align:center; padding:2rem; color:var(--gray); font-size:.95rem; }
+    .blog-fallback { text-align:center; max-width:520px; margin:0 auto; }
+    .blog-fallback p { margin-bottom:1.5rem; color:var(--gray); }
+
+    /* ─── WHATSAPP FLOAT ─────────────────────────────────────── */
+    #wa-float { position:fixed; bottom:2rem; right:2rem; z-index:888; width:58px; height:58px; border-radius:50%; background:#25d366; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 24px rgba(37,211,102,.45); transition:all var(--transition); animation:waPulse 3s infinite; }
+    #wa-float:hover { transform:scale(1.1); }
+    #wa-float svg { width:30px; height:30px; fill:var(--white); }
+    @keyframes waPulse { 0%,100%{box-shadow:0 6px 24px rgba(37,211,102,.45)}50%{box-shadow:0 6px 40px rgba(37,211,102,.65)} }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer { background:var(--charcoal); color:rgba(255,255,255,.7); padding:4rem 1.5rem 2rem; }
+    .footer-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:3rem; margin-bottom:3rem; }
+    .footer-brand h3 { color:var(--white); font-size:1.8rem; margin-bottom:.75rem; }
+    .footer-brand p  { font-size:.88rem; line-height:1.8; }
+    .footer-col h4   { color:var(--white); font-size:.82rem; letter-spacing:.14em; text-transform:uppercase; margin-bottom:1.25rem; }
+    .footer-col ul   { list-style:none; display:flex; flex-direction:column; gap:.6rem; }
+    .footer-col ul li a { font-size:.88rem; transition:color var(--transition); }
+    .footer-col ul li a:hover { color:var(--rose); }
+    .footer-bottom { max-width:1200px; margin:0 auto; border-top:1px solid rgba(255,255,255,.08); padding-top:1.75rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; font-size:.8rem; }
+    #admin-trigger { cursor:pointer; user-select:none; }
+
+    /* ─── TOAST ──────────────────────────────────────────────── */
+    #toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(100px); background:var(--charcoal); color:var(--white); padding:.9rem 2rem; border-radius:50px; font-size:.9rem; z-index:99999; transition:transform .4s cubic-bezier(.4,0,.2,1); white-space:nowrap; }
+    #toast.show { transform:translateX(-50%) translateY(0); }
+
+    /* ─── SKELETON ───────────────────────────────────────────── */
+    .skeleton { background:linear-gradient(90deg,var(--gray-lt) 25%,#e0dad7 50%,var(--gray-lt) 75%); background-size:200% 100%; animation:shimmer 1.6s infinite; border-radius:var(--radius); }
+    @keyframes shimmer { 0%{background-position:200% 0}100%{background-position:-200% 0} }
+    .loading-placeholder { height:220px; border-radius:var(--radius-lg); }
+
+    /* ─── ADMIN PANEL ────────────────────────────────────────── */
+    #admin-panel { display:none; position:fixed; inset:0; background:var(--cream); z-index:10000; overflow-y:auto; }
+    #admin-panel.open { display:block; }
+    .admin-header { background:var(--charcoal); color:var(--white); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; }
+    .admin-header h2 { font-size:1.4rem; color:var(--white); }
+    .admin-body  { max-width:1200px; margin:0 auto; padding:2rem; }
+    .admin-nav   { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:2.5rem; }
+    .admin-tab   { padding:.6rem 1.4rem; border-radius:50px; font-size:.85rem; font-weight:500; background:var(--gray-lt); color:var(--charcoal); transition:all var(--transition); }
+    .admin-tab.active { background:var(--rose); color:var(--white); }
+    .admin-section { display:none; }
+    .admin-section.active { display:block; }
+    .admin-table { width:100%; border-collapse:collapse; background:var(--white); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
+    .admin-table th { background:var(--gray-lt); text-align:left; padding:.9rem 1.25rem; font-size:.82rem; text-transform:uppercase; letter-spacing:.08em; color:var(--gray); }
+    .admin-table td { padding:.9rem 1.25rem; font-size:.88rem; border-top:1px solid var(--gray-lt); vertical-align:middle; }
+    .admin-table tr:hover td { background:rgba(201,132,126,.04); }
+    .admin-add-form { background:var(--white); border-radius:var(--radius-lg); padding:2rem; box-shadow:var(--shadow-sm); margin-bottom:2rem; }
+    .admin-add-form h3 { margin-bottom:1.5rem; }
+    .admin-add-form.editing { border-left:4px solid var(--gold); }
+    .edit-mode-banner { background:var(--gold-lt); border:1px solid var(--gold); border-radius:var(--radius); padding:.65rem 1rem; font-size:.85rem; color:#8a6830; margin-bottom:1.25rem; display:none; }
+    .edit-mode-banner.show { display:flex; align-items:center; gap:.5rem; }
+    .badge-status { display:inline-block; padding:.25rem .7rem; border-radius:50px; font-size:.75rem; font-weight:600; }
+    .badge-pending  { background:#fff8e1; color:#b8860b; }
+    .badge-approved { background:#e8f5e9; color:#2e7d32; }
+    .action-cell    { display:flex; gap:.4rem; flex-wrap:wrap; align-items:center; }
+    .admin-login-screen { position:fixed; inset:0; background:var(--cream); z-index:10001; display:flex; align-items:center; justify-content:center; padding:1.5rem; }
+    .admin-login-box { background:var(--white); border-radius:var(--radius-lg); padding:3rem; width:100%; max-width:400px; box-shadow:var(--shadow-lg); text-align:center; }
+    .admin-login-box .label { display:block; margin-bottom:.5rem; }
+    .admin-login-box h2 { margin-bottom:.5rem; }
+    .admin-login-box p  { font-size:.9rem; color:var(--gray); margin-bottom:2rem; }
+    .admin-login-logo { width:64px; height:64px; border-radius:50%; background:var(--rose-lt); margin:0 auto 1.5rem; display:flex; align-items:center; justify-content:center; }
+    .admin-login-logo svg { width:30px; height:30px; stroke:var(--rose); }
+    #admin-login-error { color:#c0392b; font-size:.85rem; margin-top:.75rem; display:none; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media(max-width:768px) {
+      .nav-links, .nav-cta { display:none; }
+      .hamburger { display:flex; }
+      section { padding:4rem 1.25rem; }
+      .form-row { grid-template-columns:1fr; }
+      .hero-actions { flex-direction:column; align-items:center; }
+      .admin-body  { padding:1rem; }
+      .admin-table td, .admin-table th { padding:.65rem .75rem; font-size:.78rem; }
+    }
+  </style>
+</head>
+<body>
+  <script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    const kb = (e.ctrlKey || e.metaKey) && ['c','u','s','a','p','x'].includes(e.key.toLowerCase());
+    const dt = e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase()));
+    if (kb || dt) e.preventDefault();
+  });
+  document.addEventListener('dragstart', e => e.preventDefault());
+  document.addEventListener('selectstart', e => e.preventDefault());
+  (function devDetect() {
+    const threshold = 400;
+    setInterval(() => {
+      if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+        document.body.innerHTML = '<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:sans-serif;font-size:0.85rem;color:#6b6560;">Please refresh the page to continue.</div>';
+      }
+    }, 1200);
+  })();
+</script>
+
+<!-- ─── CONFIG ───────────────────────────────────────────────── -->
+<script>
+const CONFIG = {
+  SCRIPT_URL:    "https://script.google.com/macros/s/AKfycbw_yXflPsp9NycQDccJLKN_CCRSEy1L14kJVYchVaYkvYFkFQyXdAwi-ZoYcUIcXIrM/exec",
+  WHATSAPP:      "254700000000",
+  ADMIN_URL_KEY: "portal",
+  ADMIN_URL_VAL: "lumiere2024",   // change this!
+  ADMIN_CLICK_COUNT: 5,
+  BLOG_URL:      "",              // e.g. "yourblog.blogspot.com" — admin sets this in Settings
+};
+</script>
+
+<!-- ─── NAVIGATION ───────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Lumière</a>
+    <ul class="nav-links">
+      <li><a href="#vsl">Our Story</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#comments">Community</a></li>
+      <li><a href="#blog">Blog</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#services" class="btn btn-outline">Book Now</a>
+      <a id="nav-wa" href="#" class="btn btn-primary" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+    <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMobile()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="#vsl" onclick="toggleMobile()">Our Story</a>
+  <a href="#gallery" onclick="toggleMobile()">Gallery</a>
+  <a href="#products" onclick="toggleMobile()">Products</a>
+  <a href="#services" onclick="toggleMobile()">Services</a>
+  <a href="#reviews" onclick="toggleMobile()">Reviews</a>
+  <a href="#comments" onclick="toggleMobile()">Community</a>
+  <a href="#blog" onclick="toggleMobile()">Blog</a>
+  <a href="#services" class="btn btn-primary" onclick="toggleMobile()">Book Appointment</a>
+</div>
+
+<!-- ─── HERO ─────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-content">
+    <p class="label">Welcome to Lumière Beauty Studio</p>
+    <h1>Where Beauty Meets <em>Artistry</em></h1>
+    <p>Expert beauty treatments crafted with passion, precision and care because you deserve to feel extraordinary.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book a Service
+      </a>
+      <a href="#products" class="btn btn-ghost">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Shop Products
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    scroll
+  </div>
+</section>
+
+<!-- ─── VSL ───────────────────────────────────────────────────── -->
+<section id="vsl">
+  <div class="container">
+    <div class="section-head">
+      <p class="label">Watch Our Story</p>
+      <h2>Experience the Lumière Difference</h2>
+      <p>A glimpse into our studio, our passion and the transformations we create every single day.</p>
+    </div>
+    <div class="vsl-wrapper">
+      <div class="vsl-embed">
+        <iframe id="yt-iframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Lumière Beauty Studio — Our Story"></iframe>
+      </div>
+      <p class="vsl-caption">"Every client who walks through our door deserves a moment that is entirely their own."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALLERY SLIDER ────────────────────────────────────────── -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-head">
+      <p class="label">Our Spaces &amp; Work</p>
+      <h2>Step Inside Our World</h2>
+      <p>From our serene studio spaces to the artistry of our treatments beauty lives here.</p>
+    </div>
+    <div class="slider-container" id="slider">
+      <div class="slider-track" id="sliderTrack"></div>
+      <button class="slider-btn prev" onclick="slidePrev()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="slider-btn next" onclick="slideNext()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="slider-dots" id="sliderDots"></div>
+  </div>
+</section>
+
+<!-- ─── PRODUCTS ─────────────────────────────────────────────── -->
+<section id="products">
+  <div class="container">
+    <div class="section-head">
+      <p class="label">Beauty Products</p>
+      <h2>Curated for Your Radiance</h2>
+      <p>Professional-grade beauty products carefully selected by our experts delivered to your door.</p>
+    </div>
+    <div class="grid-4" id="productsGrid">
+      <div class="loading-placeholder skeleton"></div>
+      <div class="loading-placeholder skeleton"></div>
+      <div class="loading-placeholder skeleton"></div>
+      <div class="loading-placeholder skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─────────────────────────────────────────────── -->
+<section id="services">
+  <div class="container">
+    <div class="section-head">
+      <p class="label">Our Services</p>
+      <h2>Expert Treatments, Lasting Results</h2>
+      <p>Every service is a ritual performed with skill, intention and the finest techniques available.</p>
+    </div>
+    <div class="grid-3" id="servicesGrid">
+      <div class="loading-placeholder skeleton"></div>
+      <div class="loading-placeholder skeleton"></div>
+      <div class="loading-placeholder skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── REVIEWS ───────────────────────────────────────────────── -->
+<section id="reviews">
+  <div class="container">
+    <div class="section-head">
+      <p class="label">Client Testimonials</p>
+      <h2>What Our Clients Say</h2>
+      <p>Every review is a story of transformation, care and the confidence that follows.</p>
+    </div>
+    <div class="reviews-grid" id="reviewsGrid">
+      <div class="loading-placeholder skeleton"></div>
+      <div class="loading-placeholder skeleton"></div>
+      <div class="loading-placeholder skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── COMMENTS ─────────────────────────────────────────────── -->
+<section id="comments">
+  <div class="container">
+    <div class="section-head">
+      <p class="label">Community</p>
+      <h2>Join the Conversation</h2>
+      <p>Share your experience, ask questions or simply say hello because we love hearing from you.</p>
+    </div>
+    <div class="comment-form">
+      <h3>Leave a Comment</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="commentName" placeholder="Enter your Full Name" />
+        </div>
+        <div class="form-group">
+          <label>Email (private)</label>
+          <input type="email" id="commentEmail" placeholder="Enter your Email" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Your Comment</label>
+        <textarea id="commentText" rows="4" placeholder="Share your thoughts..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="submitComment()" id="commentBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Post Comment
+      </button>
+    </div>
+    <div class="comment-list" id="commentList">
+      <div class="loading-placeholder skeleton" style="height:100px"></div>
+      <div class="loading-placeholder skeleton" style="height:100px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── BLOG ──────────────────────────────────────────────────── -->
+<section id="blog">
+  <div class="container">
+    <div class="section-head">
+      <p class="label">From the Studio</p>
+      <h2>Beauty Insights &amp; Updates</h2>
+      <p>Tips, trends and behind-the-scenes stories from our team updated regularly.</p>
+    </div>
+    <!-- <div id="blogContent">
+      <div class="blog-grid">
+        <div class="loading-placeholder skeleton" style="height:320px"></div>
+        <div class="loading-placeholder skeleton" style="height:320px"></div>
+        <div class="loading-placeholder skeleton" style="height:320px"></div>
+      </div>
+    </div> -->
+    <div>
+      <iframe style="width: 100%; height: 700px;" src="https://tumakazi.blogspot.com" frameborder="0"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>Lumière</h3>
+      <p>A sanctuary of beauty and self-care, where every visit leaves you feeling luminous.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#vsl">Our Story</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#blog">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Hair Styling</a></li>
+        <li><a href="#services">Facial Treatments</a></li>
+        <li><a href="#services">Nail Care</a></li>
+        <li><a href="#services">Bridal Packages</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a id="footer-wa" href="#">WhatsApp Us</a></li>
+        <li><a href="#comments">Leave a Comment</a></li>
+        <li><a href="#reviews">Read Reviews</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Lumière Beauty Studio. All rights reserved. <span id="admin-trigger" title="">&bull;</span></span>
+    <span style="font-size:.75rem;opacity:.5">Crafted with care</span>
+  </div>
+</footer>
+
+<!-- ─── WHATSAPP FLOAT ────────────────────────────────────────── -->
+<a id="wa-float" href="#" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ─── TOAST ─────────────────────────────────────────────────── -->
+<div id="toast"></div>
+
+<!-- ─── APPOINTMENT MODAL ─────────────────────────────────────── -->
+<div class="modal-overlay" id="appointmentModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('appointmentModal')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <span class="label">Book an Appointment</span>
+    <h3 id="apptServiceName">Service Name</h3>
+    <p style="color:var(--gray);font-size:.88rem;margin:.5rem 0 1.5rem">Fill in your details and we will confirm via WhatsApp.</p>
+    <div class="form-row">
+      <div class="form-group"><label>Full Name</label><input type="text" id="apptName" placeholder="Jane Wambua" /></div>
+      <div class="form-group"><label>Phone Number</label><input type="tel" id="apptPhone" placeholder="+254 700 000 000" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Preferred Date</label><input type="date" id="apptDate" /></div>
+      <div class="form-group"><label>Preferred Time</label><input type="time" id="apptTime" /></div>
+    </div>
+    <div class="form-group"><label>Any special requests?</label><textarea id="apptNotes" rows="3" placeholder="Let us know anything helpful..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('appointmentModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmAppointment()" id="apptBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Send via WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ADMIN LOGIN ────────────────────────────────────────────── -->
+<div id="adminLoginScreen" style="display:none">
+  <div class="admin-login-screen">
+    <div class="admin-login-box">
+      <div class="admin-login-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <span class="label">Studio Management</span>
+      <h2>Admin Access</h2>
+      <p>Enter your credentials to access the management portal.</p>
+      <div class="form-group"><label>Username</label><input type="text" id="adminUser" placeholder="admin" autocomplete="off" /></div>
+      <div class="form-group"><label>Password</label><input type="password" id="adminPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()" /></div>
+      <div id="admin-login-error">Invalid credentials. Please try again.</div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1.25rem" onclick="doAdminLogin()" id="adminLoginBtn">Sign In</button>
+      <button onclick="document.getElementById('adminLoginScreen').style.display='none'" style="margin-top:1rem;font-size:.82rem;color:var(--gray);text-decoration:underline;background:none;border:none;cursor:pointer;display:block;width:100%">Return to website</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ADMIN PANEL ───────────────────────────────────────────── -->
+<div id="admin-panel">
+  <div class="admin-header">
+    <div style="display:flex;align-items:center;gap:1rem">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <h2>Lumière Admin</h2>
+    </div>
+    <div style="display:flex;gap:.75rem;align-items:center">
+      <span style="font-size:.82rem;opacity:.6">Administrator</span>
+      <button class="btn btn-outline" style="border-color:rgba(255,255,255,.3);color:var(--white);padding:.4rem 1rem;font-size:.8rem" onclick="closeAdmin()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Exit
+      </button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="admin-nav">
+      <button class="admin-tab active" onclick="adminTab('appointments',this)">Appointments</button>
+      <button class="admin-tab" onclick="adminTab('products',this)">Products</button>
+      <button class="admin-tab" onclick="adminTab('services',this)">Services</button>
+      <button class="admin-tab" onclick="adminTab('reviews',this)">Reviews</button>
+      <button class="admin-tab" onclick="adminTab('comments',this)">Comments</button>
+      <button class="admin-tab" onclick="adminTab('slides',this)">Gallery Slides</button>
+      <button class="admin-tab" onclick="adminTab('settings',this)">Settings</button>
+    </div>
+
+    <!-- APPOINTMENTS -->
+    <div class="admin-section active" id="tab-appointments">
+      <h3 style="margin-bottom:1.5rem">Booked Appointments</h3>
+      <div style="overflow-x:auto">
+        <table class="admin-table">
+          <thead><tr><th>Client</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Notes</th><th>Submitted</th></tr></thead>
+          <tbody id="appointmentsBody"><tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--gray)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="admin-section" id="tab-products">
+      <div class="admin-add-form" id="productForm">
+        <div class="edit-mode-banner" id="productEditBanner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Editing product — make changes then click Save
+        </div>
+        <h3 id="productFormTitle">Add Product</h3>
+        <input type="hidden" id="editProductId" />
+        <div class="form-row">
+          <div class="form-group"><label>Product Name</label><input type="text" id="pName" placeholder="Vitamin C Serum" /></div>
+          <div class="form-group"><label>Price (KES)</label><input type="number" id="pPrice" placeholder="2500" /></div>
+        </div>
+        <div class="form-group"><label>Description</label><textarea id="pDesc" rows="2" placeholder="Brief product description..."></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Image URL</label><input type="url" id="pImage" placeholder="https://..." /></div>
+          <div class="form-group"><label>Badge (optional)</label><input type="text" id="pBadge" placeholder="New, Bestseller, Sale..." /></div>
+        </div>
+        <div style="display:flex;gap:.75rem;margin-top:.5rem">
+          <button class="btn btn-primary" onclick="saveProduct()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="productSaveLabel">Save Product</span>
+          </button>
+          <button class="btn btn-outline" onclick="clearProductForm()">Clear</button>
+        </div>
+      </div>
+      <h3 style="margin-bottom:1rem">All Products</h3>
+      <div style="overflow-x:auto">
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Price (KES)</th><th>Description</th><th>Actions</th></tr></thead>
+          <tbody id="adminProductsBody"><tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--gray)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="admin-section" id="tab-services">
+      <div class="admin-add-form" id="serviceForm">
+        <div class="edit-mode-banner" id="serviceEditBanner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Editing service — make changes then click Save
+        </div>
+        <h3 id="serviceFormTitle">Add Service</h3>
+        <input type="hidden" id="editServiceId" />
+        <div class="form-row">
+          <div class="form-group"><label>Service Name</label><input type="text" id="sName" placeholder="Hydrating Facial" /></div>
+          <div class="form-group"><label>Price (KES)</label><input type="number" id="sPrice" placeholder="3500" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Duration</label><input type="text" id="sDuration" placeholder="60 min" /></div>
+          <div class="form-group"><label>Category</label>
+            <select id="sCategory"><option>Hair</option><option>Skin</option><option>Nails</option><option>Makeup</option><option>Body</option><option>Bridal</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Description</label><textarea id="sDesc" rows="2" placeholder="What is included in this service..."></textarea></div>
+        <div style="display:flex;gap:.75rem;margin-top:.5rem">
+          <button class="btn btn-primary" onclick="saveService()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="serviceSaveLabel">Save Service</span>
+          </button>
+          <button class="btn btn-outline" onclick="clearServiceForm()">Clear</button>
+        </div>
+      </div>
+      <h3 style="margin-bottom:1rem">All Services</h3>
+      <div style="overflow-x:auto">
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Price (KES)</th><th>Duration</th><th>Category</th><th>Actions</th></tr></thead>
+          <tbody id="adminServicesBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="admin-section" id="tab-reviews">
+      <div class="admin-add-form" id="reviewForm">
+        <div class="edit-mode-banner" id="reviewEditBanner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Editing review — make changes then click Save
+        </div>
+        <h3 id="reviewFormTitle">Add Review</h3>
+        <input type="hidden" id="editReviewId" />
+        <div class="form-row">
+          <div class="form-group"><label>Client Name</label><input type="text" id="rName" placeholder="Jane Wambua" /></div>
+          <div class="form-group"><label>Rating (1–5)</label><input type="number" id="rStars" min="1" max="5" placeholder="5" /></div>
+        </div>
+        <div class="form-group"><label>Service Used</label><input type="text" id="rService" placeholder="Hair Styling" /></div>
+        <div class="form-group"><label>Review Text</label><textarea id="rText" rows="3" placeholder="Client's words..."></textarea></div>
+        <div style="display:flex;gap:.75rem;margin-top:.5rem">
+          <button class="btn btn-primary" onclick="saveReview()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="reviewSaveLabel">Add Review</span>
+          </button>
+          <button class="btn btn-outline" onclick="clearReviewForm()">Clear</button>
+        </div>
+      </div>
+      <h3 style="margin-bottom:1rem">All Reviews</h3>
+      <div style="overflow-x:auto" id="adminReviewsList"></div>
+    </div>
+
+    <!-- COMMENTS -->
+    <div class="admin-section" id="tab-comments">
+      <!-- Inline edit form (hidden until edit clicked) -->
+      <div class="admin-add-form" id="commentEditForm" style="display:none">
+        <div class="edit-mode-banner show">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Editing comment
+        </div>
+        <h3>Edit Comment</h3>
+        <input type="hidden" id="editCommentId" />
+        <div class="form-row">
+          <div class="form-group"><label>Name</label><input type="text" id="editCommentName" /></div>
+          <div class="form-group"><label>Status</label>
+            <select id="editCommentApproved"><option value="TRUE">Approved (Published)</option><option value="FALSE">Pending (Hidden)</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Comment Text</label><textarea id="editCommentText" rows="3"></textarea></div>
+        <div style="display:flex;gap:.75rem;margin-top:.5rem">
+          <button class="btn btn-primary" onclick="updateComment()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Save Changes
+          </button>
+          <button class="btn btn-outline" onclick="cancelCommentEdit()">Cancel</button>
+        </div>
+      </div>
+      <h3 style="margin-bottom:1.5rem">Customer Comments</h3>
+      <div id="adminCommentsList"></div>
+    </div>
+
+    <!-- GALLERY SLIDES -->
+    <div class="admin-section" id="tab-slides">
+      <div class="admin-add-form" id="slideForm">
+        <div class="edit-mode-banner" id="slideEditBanner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Editing slide — make changes then click Save
+        </div>
+        <h3 id="slideFormTitle">Add Gallery Slide</h3>
+        <input type="hidden" id="editSlideId" />
+        <div class="form-row">
+          <div class="form-group"><label>Image URL</label><input type="url" id="slideImg" placeholder="https://..." /></div>
+          <div class="form-group"><label>Caption Title</label><input type="text" id="slideTitle" placeholder="Our Nairobi Studio" /></div>
+        </div>
+        <div class="form-group"><label>Caption Subtitle</label><input type="text" id="slideSubtitle" placeholder="Where magic begins" /></div>
+        <div style="display:flex;gap:.75rem;margin-top:.5rem">
+          <button class="btn btn-primary" onclick="saveSlide()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span id="slideSaveLabel">Add Slide</span>
+          </button>
+          <button class="btn btn-outline" onclick="clearSlideForm()">Clear</button>
+        </div>
+      </div>
+      <h3 style="margin-bottom:1rem">All Slides</h3>
+      <div style="overflow-x:auto" id="adminSlidesList"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="admin-section" id="tab-settings">
+      <div class="admin-add-form">
+        <h3>Site Settings</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Business Name</label><input type="text" id="setBusinessName" placeholder="Lumière Beauty Studio" /></div>
+          <div class="form-group"><label>WhatsApp Number (with country code)</label><input type="text" id="setWhatsapp" placeholder="254700000000" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>YouTube Video ID or URL</label><input type="text" id="setYoutube" placeholder="dQw4w9WgXcQ" /></div>
+          <div class="form-group"><label>Blogspot Blog URL</label><input type="text" id="setBlog" placeholder="yourblog.blogspot.com" /></div>
+        </div>
+        <div class="form-group"><label>Admin Password (leave blank to keep current)</label><input type="password" id="setPassword" placeholder="New password..." /></div>
+        <button class="btn btn-primary" onclick="saveSettings()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Save Settings
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /admin-body -->
+</div><!-- /admin-panel -->
+
+<!-- ─── JAVASCRIPT ────────────────────────────────────────────── -->
+<script>
+/* ─── STATE ─────────────────────────────────────────────────── */
+let currentSlide = 0, slideTimer = null;
+let slides = [], products = [], services = [];
+let selectedService = null, adminToken = null;
+let clickCount = 0, clickTimer = null;
+
+/* ─── INIT ──────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  setWaLinks();
+  checkAdminURL();
+  loadPublicData();
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+  document.getElementById('admin-trigger').addEventListener('click', () => {
+    clickCount++;
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => { clickCount = 0; }, 3000);
+    if (clickCount >= CONFIG.ADMIN_CLICK_COUNT) { clickCount = 0; showAdminLogin(); }
+  });
+  document.querySelectorAll('.modal-overlay').forEach(m =>
+    m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); })
+  );
+});
+
+function setWaLinks() {
+  const url = `https://wa.me/${CONFIG.WHATSAPP}`;
+  ['wa-float','nav-wa','footer-wa'].forEach(id => document.getElementById(id).href = url);
+}
+function toggleMobile() { document.getElementById('mobileMenu').classList.toggle('open'); }
+function checkAdminURL() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get(CONFIG.ADMIN_URL_KEY) === CONFIG.ADMIN_URL_VAL) {
+    showAdminLogin();
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+}
+
+/* ─── API ───────────────────────────────────────────────────── */
+async function api(action, data = {}) {
+  const res = await fetch(CONFIG.SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action, ...data }),
+  });
+  return res.json();
+}
+async function apiGet(action, params = {}) {
+  let url = CONFIG.SCRIPT_URL + `?action=${action}`;
+  for (const [k,v] of Object.entries(params)) url += `&${k}=${encodeURIComponent(v)}`;
+  return (await fetch(url)).json();
+}
+
+/* ─── PUBLIC DATA ────────────────────────────────────────────── */
+async function loadPublicData() {
+  try {
+    const [pr,sv,rv,cm,st,sl] = await Promise.all([
+      apiGet('getProducts'), apiGet('getServices'), apiGet('getReviews'),
+      apiGet('getComments'), apiGet('getSettings'), apiGet('getSlides'),
+    ]);
+    products = pr.data || []; services = sv.data || [];
+    renderProducts(products); renderServices(services);
+    renderReviews(rv.data || []); renderComments(cm.data || []);
+    if (st.data) applySettings(st.data);
+    slides = (sl.data && sl.data.length) ? sl.data : defaultSlides();
+    renderSlider();
+    loadBlog(CONFIG.BLOG_URL || (st.data && st.data.blogUrl) || '');
+  } catch(e) {
+    products = demoProducts(); services = demoServices(); slides = defaultSlides();
+    renderProducts(products); renderServices(services);
+    renderReviews(demoReviews()); renderComments(demoComments());
+    renderSlider(); loadBlog('');
+  }
+}
+
+function applySettings(s) {
+  if (s.businessName) document.title = s.businessName;
+  if (s.whatsapp)  { CONFIG.WHATSAPP = s.whatsapp; setWaLinks(); }
+  if (s.youtube)   { document.getElementById('yt-iframe').src = `https://www.youtube.com/embed/${extractYT(s.youtube)}?rel=0&modestbranding=1`; }
+  if (s.blogUrl)   CONFIG.BLOG_URL = s.blogUrl;
+}
+function extractYT(v) { const m = v.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/); return m ? m[1] : v; }
+
+/* ─── SLIDER ─────────────────────────────────────────────────── */
+function defaultSlides() {
+  return [
+    { id:'1', imageUrl:'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&auto=format', title:'Our Main Studio', subtitle:'Nairobi CBD — where it all began' },
+    { id:'2', imageUrl:'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format', title:'Skin & Facial Suite', subtitle:'Advanced treatments in a serene setting' },
+    { id:'3', imageUrl:'https://images.unsplash.com/photo-1487412947147-5cebf96ef562?w=1200&auto=format', title:'Hair Artistry', subtitle:'From classic cuts to bold transformations' },
+    { id:'4', imageUrl:'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=1200&auto=format', title:'Nail Studio', subtitle:'Perfect finishes, every time' },
+  ];
+}
+function renderSlider() {
+  document.getElementById('sliderTrack').innerHTML =
+    slides.map(s => `<div class="slide"><img src="${s.imageUrl}" alt="${s.title}" loading="lazy" /><div class="slide-caption"><h3>${s.title}</h3><p>${s.subtitle}</p></div></div>`).join('');
+  document.getElementById('sliderDots').innerHTML =
+    slides.map((_,i) => `<span class="dot ${i===0?'active':''}" onclick="goSlide(${i})"></span>`).join('');
+  clearInterval(slideTimer);
+  slideTimer = setInterval(slideNext, 5500);
+}
+function goSlide(n) {
+  currentSlide = (n + slides.length) % slides.length;
+  document.getElementById('sliderTrack').style.transform = `translateX(-${currentSlide*100}%)`;
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===currentSlide));
+}
+function slideNext() { goSlide(currentSlide+1); }
+function slidePrev() { goSlide(currentSlide-1); }
+
+/* ─── PRODUCTS ───────────────────────────────────────────────── */
+function demoProducts() {
+  return [
+    { id:'1', name:'Radiance Vitamin C Serum', description:'Brightening serum for a luminous glow', price:2800, imageUrl:'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&auto=format', badge:'Bestseller' },
+    { id:'2', name:'Hydrating Rose Toner', description:'Balancing and deeply hydrating rose water toner', price:1500, imageUrl:'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&auto=format', badge:'New' },
+    { id:'3', name:'Nourishing Hair Oil', description:'Strengthening blend of argan and castor oils', price:1800, imageUrl:'https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=400&auto=format', badge:'' },
+    { id:'4', name:'SPF 50 Moisturiser', description:'Lightweight daily moisturiser with broad-spectrum SPF', price:3200, imageUrl:'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&auto=format', badge:'Popular' },
+  ];
+}
+function renderProducts(list) {
+  const g = document.getElementById('productsGrid');
+  g.innerHTML = !list.length ? '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--gray)">No products yet.</div>' :
+    list.map(p => `<div class="product-card">
+      <div class="product-img">
+        <img src="${p.imageUrl||'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&auto=format'}" alt="${p.name}" loading="lazy" />
+        ${p.badge?`<span class="product-badge">${p.badge}</span>`:''}
+      </div>
+      <div class="product-body">
+        <h3>${p.name}</h3><p>${p.description}</p>
+        <div class="product-price">KES ${Number(p.price).toLocaleString('en-KE')}</div>
+        <div class="product-actions">
+          <button class="btn btn-primary" onclick="buyProduct('${escape(p.name)}',${p.price})">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Order via WhatsApp
+          </button>
+        </div>
+      </div></div>`).join('');
+}
+function buyProduct(name, price) {
+  const msg = `Hello! I would like to order:\n\n*Product:* ${unescape(name)}\n*Price:* KES ${Number(price).toLocaleString('en-KE')}\n\nKindly assist me with this order. Thank you!`;
+  window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+/* ─── SERVICES ───────────────────────────────────────────────── */
+const SVC_ICONS = {
+  Hair:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 015 5v3a5 5 0 01-10 0V7a5 5 0 015-5z"/><path d="M8 14s0 6 4 6 4-6 4-6"/></svg>`,
+  Skin:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c-4.97 0-9-3.13-9-7 0-2.5 1.5-4.5 3.5-5.5C7 8 8 6 9.5 5c.83-3 5.17-3 6 0 1.5 1 2.5 3 3 4.5 2 1 3.5 3 3.5 5.5 0 3.87-4.03 7-9 7z"/></svg>`,
+  Nails: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="14" rx="3"/><path d="M7 10H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2v-6a2 2 0 00-2-2h-3"/></svg>`,
+  Makeup:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`,
+  Body:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`,
+  Bridal:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+};
+function demoServices() {
+  return [
+    { id:'1', name:'Signature Facial', description:'Deep cleanse, exfoliation, and a customised mask for radiant skin.', price:4500, duration:'75 min', category:'Skin' },
+    { id:'2', name:'Luxury Hair Styling', description:'Cut, blow-dry, and style by our senior stylist.', price:3000, duration:'60 min', category:'Hair' },
+    { id:'3', name:'Gel Manicure & Pedicure', description:'Long-lasting gel polish with cuticle care and a relaxing soak.', price:2800, duration:'90 min', category:'Nails' },
+    { id:'4', name:'Bridal Package', description:'Full-day bridal treatment — makeup, hair, skin prep, and nails.', price:18000, duration:'Full day', category:'Bridal' },
+    { id:'5', name:'Relaxing Body Massage', description:'Swedish massage with aromatic oils to melt away tension.', price:5500, duration:'90 min', category:'Body' },
+    { id:'6', name:'Glamour Makeup', description:'Full glam makeup look using premium products for any occasion.', price:4000, duration:'60 min', category:'Makeup' },
+  ];
+}
+function renderServices(list) {
+  const g = document.getElementById('servicesGrid');
+  g.innerHTML = !list.length ? '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--gray)">No services yet.</div>' :
+    list.map(s => `<div class="service-card">
+      <div class="service-icon">${SVC_ICONS[s.category]||SVC_ICONS['Skin']}</div>
+      <h3>${s.name}</h3><p>${s.description}</p>
+      <div class="service-duration">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        ${s.duration} &nbsp;|&nbsp; ${s.category}
+      </div>
+      <div class="service-price">KES ${Number(s.price).toLocaleString('en-KE')}</div>
+      <button class="btn btn-primary" onclick="openBooking('${s.id}','${escape(s.name)}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book Now
+      </button></div>`).join('');
+}
+function openBooking(id, name) {
+  selectedService = { id, name: unescape(name) };
+  document.getElementById('apptServiceName').textContent = unescape(name);
+  document.getElementById('apptDate').min = new Date().toISOString().split('T')[0];
+  openModal('appointmentModal');
+}
+async function confirmAppointment() {
+  const name=document.getElementById('apptName').value.trim(), phone=document.getElementById('apptPhone').value.trim(),
+        date=document.getElementById('apptDate').value, time=document.getElementById('apptTime').value,
+        notes=document.getElementById('apptNotes').value.trim();
+  if (!name||!phone||!date||!time) { showToast('Please fill in all required fields.'); return; }
+  setBtnLoading('apptBtn', true, 'Sending...');
+  try { await api('addAppointment', { clientName:name, phone, service:selectedService.name, date, time, notes }); } catch(e) {}
+  const msg = `Hello Lumière!\n\nAppointment Request:\n*Service:* ${selectedService.name}\n*Date:* ${date}\n*Time:* ${time}\n*Name:* ${name}\n*Phone:* ${phone}${notes?`\n*Notes:* ${notes}`:''}`;
+  window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
+  setBtnLoading('apptBtn', false, 'Send via WhatsApp');
+  closeModal('appointmentModal');
+  showToast('Booking request sent via WhatsApp.');
+  ['apptName','apptPhone','apptDate','apptTime','apptNotes'].forEach(id => document.getElementById(id).value='');
+}
+
+/* ─── REVIEWS ─────────────────────────────────────────────────── */
+function demoReviews() {
+  return [
+    { id:'1', clientName:'Amina Odhiambo', stars:5, text:'The facial treatment left my skin glowing for weeks! The team is so skilled and the ambience is just beautiful. Will be back every month.', service:'Signature Facial' },
+    { id:'2', clientName:'Sharon Kamau',   stars:5, text:'Best hair stylist I have ever been to. My hair looked incredible and she really listened to exactly what I wanted. Absolutely recommend.', service:'Hair Styling' },
+    { id:'3', clientName:'Patricia Njoki', stars:5, text:'The bridal package was everything and more. I felt like royalty on my wedding day. Every detail was perfect. Thank you Lumière!', service:'Bridal Package' },
+  ];
+}
+function starSVG(f) { return `<svg viewBox="0 0 24 24" fill="${f?'#c9a96e':'none'}" stroke="#c9a96e" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`; }
+function renderReviews(list) {
+  const g = document.getElementById('reviewsGrid');
+  g.innerHTML = !list.length ? '<div style="grid-column:1/-1;text-align:center;color:var(--gray)">No reviews yet.</div>' :
+    list.map(r => `<div class="review-card">
+      <div class="review-stars">${Array.from({length:5},(_,i)=>starSVG(i<r.stars)).join('')}</div>
+      <p class="review-text">"${r.text}"</p>
+      <div class="review-author">
+        <div class="review-avatar">${r.clientName[0]}</div>
+        <div class="review-author-info"><strong>${r.clientName}</strong><span>${r.service||''}</span></div>
+      </div></div>`).join('');
+}
+
+/* ─── COMMENTS ───────────────────────────────────────────────── */
+function demoComments() {
+  return [
+    { id:'1', name:'Lucy Mwangi', text:'Love this studio! Just booked my first appointment and cannot wait.', date:'2024-02-10T10:22:00Z' },
+    { id:'2', name:'Grace Atieno', text:'The customer service is exceptional. They responded to my WhatsApp within minutes!', date:'2024-02-12T14:05:00Z' },
+  ];
+}
+function renderComments(list) {
+  const c = document.getElementById('commentList');
+  c.innerHTML = !list.length ? '<div style="text-align:center;padding:2rem;color:var(--gray)">Be the first to leave a comment.</div>' :
+    list.map(c => `<div class="comment-item">
+      <div class="comment-avatar">${c.name[0]}</div>
+      <div class="comment-body">
+        <strong>${c.name}</strong>
+        <time>${new Date(c.date).toLocaleDateString('en-KE',{day:'numeric',month:'short',year:'numeric'})}</time>
+        <p>${c.text}</p>
+      </div></div>`).join('');
+}
+async function submitComment() {
+  const name=document.getElementById('commentName').value.trim(), email=document.getElementById('commentEmail').value.trim(), text=document.getElementById('commentText').value.trim();
+  if (!name||!text) { showToast('Please enter your name and comment.'); return; }
+  setBtnLoading('commentBtn', true, 'Posting...');
+  try {
+    await api('addComment', { name, email, text });
+    showToast('Comment submitted for review. Thank you!');
+    ['commentName','commentEmail','commentText'].forEach(id => document.getElementById(id).value='');
+  } catch(e) { showToast('Could not post comment. Please try again.'); }
+  setBtnLoading('commentBtn', false, 'Post Comment');
+}
+
+/* ─── BLOG ────────────────────────────────────────────────────── */
+async function loadBlog(blogUrl) {
+  const wrap = document.getElementById('blogContent');
+  if (!blogUrl) {
+    wrap.innerHTML = `<div class="blog-fallback"><p>Connect your Blogspot blog in the admin settings to display posts here automatically.</p><a href="#" class="btn btn-outline" onclick="event.preventDefault()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+      Visit Our Blog</a></div>`;
+    return;
+  }
+  const domain = blogUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  const feedUrl = `https://${domain}/feeds/posts/default?alt=json&max-results=3`;
+  try {
+    const res = await fetch(feedUrl);
+    const json = await res.json();
+    const entries = json.feed?.entry || [];
+    if (!entries.length) throw new Error('No posts');
+    wrap.innerHTML = `<div class="blog-grid">${entries.map(e => {
+      const title   = e.title?.$t || 'Untitled';
+      const content = e.content?.$t || e.summary?.$t || '';
+      const plain   = content.replace(/<[^>]+>/g,'').substring(0,140);
+      const link    = (e.link?.find(l => l.rel==='alternate'))?.href || `https://${domain}`;
+      const date    = new Date(e.published?.$t).toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric'});
+      const thumb   = (() => { const m = content.match(/src="([^"]+\.(jpg|jpeg|png|webp)[^"]*)"/i); return m ? m[1] : null; })();
+      return `<div class="blog-card">
+        ${thumb
+          ? `<img class="blog-thumb" src="${thumb}" alt="${title}" loading="lazy" />`
+          : `<div class="blog-thumb-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`}
+        <div class="blog-body">
+          <p class="blog-meta">${date}</p>
+          <h3>${title}</h3>
+          <p>${plain}...</p>
+          <a href="${link}" target="_blank" rel="noopener">
+            Read more
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div></div>`;
+    }).join('')}</div>
+    <div style="text-align:center;margin-top:2.5rem">
+      <a href="https://${domain}" target="_blank" rel="noopener" class="btn btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        View All Posts
+      </a>
+    </div>`;
+  } catch(err) {
+    wrap.innerHTML = `<div class="blog-fallback">
+      <p>Could not load blog posts automatically. <a href="https://${domain}" target="_blank" style="color:var(--rose)">Visit our blog directly.</a></p></div>`;
+  }
+}
+
+/* ─── MODAL HELPERS ──────────────────────────────────────────── */
+function openModal(id)  { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+
+/* ─── TOAST ──────────────────────────────────────────────────── */
+function showToast(msg, ms=3200) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), ms);
+}
+
+/* ─── BUTTON LOADING ─────────────────────────────────────────── */
+function setBtnLoading(id, loading, label) {
+  const b = document.getElementById(id); if (!b) return;
+  b.disabled = loading; b.textContent = label;
+}
+
+/* ─── ADMIN — AUTH ───────────────────────────────────────────── */
+function showAdminLogin() { document.getElementById('adminLoginScreen').style.display='flex'; }
+async function doAdminLogin() {
+  const user=document.getElementById('adminUser').value.trim(), pass=document.getElementById('adminPass').value;
+  if (!user||!pass) return;
+  setBtnLoading('adminLoginBtn', true, 'Verifying...');
+  try {
+    const res = await api('adminLogin', { username:user, password:pass });
+    if (res.success && res.token) {
+      adminToken = res.token;
+      document.getElementById('adminLoginScreen').style.display='none';
+      document.getElementById('admin-login-error').style.display='none';
+      document.getElementById('admin-panel').classList.add('open');
+      document.body.style.overflow='hidden';
+      loadAdminData();
+    } else {
+      document.getElementById('admin-login-error').style.display='block';
+    }
+  } catch(e) {
+    if (user==='admin'&&pass==='lumiere2024') {
+      adminToken='demo';
+      document.getElementById('adminLoginScreen').style.display='none';
+      document.getElementById('admin-login-error').style.display='none';
+      document.getElementById('admin-panel').classList.add('open');
+      document.body.style.overflow='hidden';
+      loadAdminData();
+    } else { document.getElementById('admin-login-error').style.display='block'; }
+  }
+  setBtnLoading('adminLoginBtn', false, 'Sign In');
+}
+function closeAdmin() {
+  document.getElementById('admin-panel').classList.remove('open');
+  document.body.style.overflow=''; adminToken=null;
+}
+function adminTab(name, btn) {
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`tab-${name}`).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ─── ADMIN — LOAD ALL ───────────────────────────────────────── */
+async function loadAdminData() {
+  await Promise.all([
+    loadAdminAppointments(), loadAdminProducts(), loadAdminServices(),
+    loadAdminReviews(), loadAdminComments(), loadAdminSlides(), loadAdminSettings(),
+  ]);
+}
+
+async function loadAdminAppointments() {
+  try {
+    const res = await api('adminGetAppointments', {token:adminToken});
+    const list = res.data || demoAppointments();
+    document.getElementById('appointmentsBody').innerHTML = list.length
+      ? list.map(a=>`<tr><td>${a.clientName}</td><td>${a.phone}</td><td>${a.service}</td><td>${a.date}</td><td>${a.time}</td><td>${a.notes||'—'}</td><td>${a.timestamp?new Date(a.timestamp).toLocaleDateString('en-KE'):'—'}</td></tr>`).join('')
+      : '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--gray)">No appointments yet.</td></tr>';
+  } catch(e) {
+    document.getElementById('appointmentsBody').innerHTML = demoAppointments().map(a=>`<tr><td>${a.clientName}</td><td>${a.phone}</td><td>${a.service}</td><td>${a.date}</td><td>${a.time}</td><td>${a.notes||'—'}</td><td>—</td></tr>`).join('');
+  }
+}
+function demoAppointments() {
+  return [
+    {clientName:'Faith Njeri',phone:'+254 722 111 222',service:'Signature Facial',date:'2024-03-10',time:'10:00',notes:'First time visitor'},
+    {clientName:'Cynthia Achieng',phone:'+254 733 444 555',service:'Bridal Package',date:'2024-03-15',time:'09:00',notes:'Wedding day'},
+  ];
+}
+
+/* ─── ADMIN — PRODUCTS CRUD ──────────────────────────────────── */
+async function loadAdminProducts() {
+  try { const r=await api('adminGetProducts',{token:adminToken}); renderAdminProducts(r.data||products); } catch(e) { renderAdminProducts(products); }
+}
+function renderAdminProducts(list) {
+  document.getElementById('adminProductsBody').innerHTML = list.length
+    ? list.map(p=>`<tr>
+        <td>${p.name}</td>
+        <td>KES ${Number(p.price).toLocaleString('en-KE')}</td>
+        <td style="max-width:220px">${(p.description||'').substring(0,80)}</td>
+        <td><div class="action-cell">
+          <button class="btn btn-sm btn-edit" onclick='editProduct(${JSON.stringify(p).replace(/'/g,"&#39;")})'>Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteProduct('${p.id}')">Delete</button>
+        </div></td></tr>`).join('')
+    : '<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--gray)">No products.</td></tr>';
+}
+async function saveProduct() {
+  const id=document.getElementById('editProductId').value, name=document.getElementById('pName').value.trim(), price=document.getElementById('pPrice').value;
+  if (!name||!price) { showToast('Name and price are required.'); return; }
+  const payload = { token:adminToken, id, name, price, description:document.getElementById('pDesc').value.trim(), imageUrl:document.getElementById('pImage').value.trim(), badge:document.getElementById('pBadge').value.trim() };
+  try {
+    await api(id?'adminUpdateProduct':'adminAddProduct', payload);
+    showToast(id?'Product updated.':'Product added.');
+    clearProductForm(); await loadAdminProducts();
+    const r=await apiGet('getProducts'); products=r.data||products; renderProducts(products);
+  } catch(e) {
+    const p={id:id||Date.now().toString(),name,price,description:payload.description,imageUrl:payload.imageUrl,badge:payload.badge};
+    if(id){const i=products.findIndex(x=>x.id===id);if(i>=0)products[i]=p;}else products.push(p);
+    renderProducts(products); renderAdminProducts(products);
+    showToast(id?'Product updated (demo).':'Product added (demo).'); clearProductForm();
+  }
+}
+function editProduct(p) {
+  document.getElementById('editProductId').value=p.id; document.getElementById('pName').value=p.name;
+  document.getElementById('pPrice').value=p.price; document.getElementById('pDesc').value=p.description||'';
+  document.getElementById('pImage').value=p.imageUrl||''; document.getElementById('pBadge').value=p.badge||'';
+  document.getElementById('productFormTitle').textContent='Edit Product';
+  document.getElementById('productSaveLabel').textContent='Update Product';
+  document.getElementById('productEditBanner').classList.add('show');
+  document.getElementById('productForm').classList.add('editing');
+  document.getElementById('tab-products').scrollIntoView({behavior:'smooth'});
+}
+function clearProductForm() {
+  ['editProductId','pName','pPrice','pDesc','pImage','pBadge'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('productFormTitle').textContent='Add Product';
+  document.getElementById('productSaveLabel').textContent='Save Product';
+  document.getElementById('productEditBanner').classList.remove('show');
+  document.getElementById('productForm').classList.remove('editing');
+}
+async function deleteProduct(id) {
+  if(!confirm('Remove this product?'))return;
+  try { await api('adminDeleteProduct',{token:adminToken,id}); } catch(e) {}
+  products=products.filter(p=>p.id!==id); renderProducts(products); renderAdminProducts(products); showToast('Product removed.');
+}
+
+/* ─── ADMIN — SERVICES CRUD ──────────────────────────────────── */
+async function loadAdminServices() {
+  try { const r=await api('adminGetServices',{token:adminToken}); renderAdminServices(r.data||services); } catch(e) { renderAdminServices(services); }
+}
+function renderAdminServices(list) {
+  document.getElementById('adminServicesBody').innerHTML = list.length
+    ? list.map(s=>`<tr>
+        <td>${s.name}</td><td>KES ${Number(s.price).toLocaleString('en-KE')}</td>
+        <td>${s.duration}</td><td>${s.category}</td>
+        <td><div class="action-cell">
+          <button class="btn btn-sm btn-edit" onclick='editService(${JSON.stringify(s).replace(/'/g,"&#39;")})'>Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteService('${s.id}')">Delete</button>
+        </div></td></tr>`).join('')
+    : '<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">No services.</td></tr>';
+}
+async function saveService() {
+  const id=document.getElementById('editServiceId').value, name=document.getElementById('sName').value.trim(), price=document.getElementById('sPrice').value;
+  if(!name||!price){showToast('Name and price are required.');return;}
+  const payload={token:adminToken,id,name,price,duration:document.getElementById('sDuration').value.trim(),category:document.getElementById('sCategory').value,description:document.getElementById('sDesc').value.trim()};
+  try {
+    await api(id?'adminUpdateService':'adminAddService',payload);
+    showToast(id?'Service updated.':'Service added.'); clearServiceForm(); await loadAdminServices();
+    const r=await apiGet('getServices'); services=r.data||services; renderServices(services);
+  } catch(e) {
+    const s={id:id||Date.now().toString(),name,price,duration:payload.duration,category:payload.category,description:payload.description};
+    if(id){const i=services.findIndex(x=>x.id===id);if(i>=0)services[i]=s;}else services.push(s);
+    renderServices(services); renderAdminServices(services);
+    showToast(id?'Service updated (demo).':'Service added (demo).'); clearServiceForm();
+  }
+}
+function editService(s) {
+  document.getElementById('editServiceId').value=s.id; document.getElementById('sName').value=s.name;
+  document.getElementById('sPrice').value=s.price; document.getElementById('sDuration').value=s.duration;
+  document.getElementById('sCategory').value=s.category; document.getElementById('sDesc').value=s.description||'';
+  document.getElementById('serviceFormTitle').textContent='Edit Service';
+  document.getElementById('serviceSaveLabel').textContent='Update Service';
+  document.getElementById('serviceEditBanner').classList.add('show');
+  document.getElementById('serviceForm').classList.add('editing');
+  document.getElementById('tab-services').scrollIntoView({behavior:'smooth'});
+}
+function clearServiceForm() {
+  ['editServiceId','sName','sPrice','sDuration','sDesc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('serviceFormTitle').textContent='Add Service';
+  document.getElementById('serviceSaveLabel').textContent='Save Service';
+  document.getElementById('serviceEditBanner').classList.remove('show');
+  document.getElementById('serviceForm').classList.remove('editing');
+}
+async function deleteService(id) {
+  if(!confirm('Remove this service?'))return;
+  try { await api('adminDeleteService',{token:adminToken,id}); } catch(e) {}
+  services=services.filter(s=>s.id!==id); renderServices(services); renderAdminServices(services); showToast('Service removed.');
+}
+
+/* ─── ADMIN — REVIEWS CRUD ───────────────────────────────────── */
+async function loadAdminReviews() {
+  try { const r=await api('adminGetReviews',{token:adminToken}); renderAdminReviews(r.data||demoReviews()); } catch(e) { renderAdminReviews(demoReviews()); }
+}
+function renderAdminReviews(list) {
+  document.getElementById('adminReviewsList').innerHTML = list.length
+    ? `<table class="admin-table"><thead><tr><th>Client</th><th>Stars</th><th>Service</th><th>Review</th><th>Actions</th></tr></thead>
+       <tbody>${list.map(r=>`<tr>
+         <td>${r.clientName}</td><td>${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</td>
+         <td>${r.service||'—'}</td><td style="max-width:260px;font-size:.82rem">${(r.text||'').substring(0,90)}...</td>
+         <td><div class="action-cell">
+           <button class="btn btn-sm btn-edit" onclick='editReview(${JSON.stringify(r).replace(/'/g,"&#39;")})'>Edit</button>
+           <button class="btn btn-sm btn-danger" onclick="deleteReview('${r.id}')">Delete</button>
+         </div></td></tr>`).join('')}
+       </tbody></table>`
+    : '<div style="text-align:center;padding:2rem;color:var(--gray)">No reviews yet.</div>';
+}
+async function saveReview() {
+  const id=document.getElementById('editReviewId').value, name=document.getElementById('rName').value.trim(), text=document.getElementById('rText').value.trim();
+  if(!name||!text){showToast('Name and review text required.');return;}
+  const payload={token:adminToken,id,clientName:name,stars:parseInt(document.getElementById('rStars').value)||5,service:document.getElementById('rService').value.trim(),text};
+  try {
+    await api(id?'adminUpdateReview':'adminAddReview',payload);
+    showToast(id?'Review updated.':'Review added.'); clearReviewForm(); await loadAdminReviews();
+    const r=await apiGet('getReviews'); renderReviews(r.data||[]);
+  } catch(e) { showToast(id?'Review updated (demo).':'Review added (demo).'); clearReviewForm(); await loadAdminReviews(); }
+}
+function editReview(r) {
+  document.getElementById('editReviewId').value=r.id; document.getElementById('rName').value=r.clientName;
+  document.getElementById('rStars').value=r.stars; document.getElementById('rService').value=r.service||'';
+  document.getElementById('rText').value=r.text;
+  document.getElementById('reviewFormTitle').textContent='Edit Review';
+  document.getElementById('reviewSaveLabel').textContent='Update Review';
+  document.getElementById('reviewEditBanner').classList.add('show');
+  document.getElementById('reviewForm').classList.add('editing');
+  document.getElementById('tab-reviews').scrollIntoView({behavior:'smooth'});
+}
+function clearReviewForm() {
+  ['editReviewId','rName','rStars','rService','rText'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('reviewFormTitle').textContent='Add Review';
+  document.getElementById('reviewSaveLabel').textContent='Add Review';
+  document.getElementById('reviewEditBanner').classList.remove('show');
+  document.getElementById('reviewForm').classList.remove('editing');
+}
+async function deleteReview(id) {
+  if(!confirm('Remove this review?'))return;
+  try { await api('adminDeleteReview',{token:adminToken,id}); } catch(e) {}
+  await loadAdminReviews(); const r=await apiGet('getReviews'); renderReviews(r.data||[]); showToast('Review removed.');
+}
+
+/* ─── ADMIN — COMMENTS CRUD ──────────────────────────────────── */
+async function loadAdminComments() {
+  try { const r=await api('adminGetComments',{token:adminToken}); renderAdminComments(r.data||demoComments()); } catch(e) { renderAdminComments(demoComments()); }
+}
+function renderAdminComments(list) {
+  document.getElementById('adminCommentsList').innerHTML = list.length
+    ? `<table class="admin-table"><thead><tr><th>Name</th><th>Comment</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+       <tbody>${list.map(c=>`<tr>
+         <td>${c.name}</td>
+         <td style="max-width:280px;font-size:.82rem">${(c.text||'').substring(0,100)}</td>
+         <td>${new Date(c.date).toLocaleDateString('en-KE')}</td>
+         <td><span class="badge-status ${c.approved?'badge-approved':'badge-pending'}">${c.approved?'Approved':'Pending'}</span></td>
+         <td><div class="action-cell">
+           <button class="btn btn-sm btn-edit" onclick='startCommentEdit(${JSON.stringify(c).replace(/'/g,"&#39;")})'>Edit</button>
+           ${!c.approved?`<button class="btn btn-sm btn-outline" onclick="approveComment('${c.id}')">Approve</button>`:''}
+           <button class="btn btn-sm btn-danger" onclick="deleteComment('${c.id}')">Delete</button>
+         </div></td></tr>`).join('')}
+       </tbody></table>`
+    : '<div style="text-align:center;padding:2rem;color:var(--gray)">No comments yet.</div>';
+}
+function startCommentEdit(c) {
+  document.getElementById('editCommentId').value=c.id;
+  document.getElementById('editCommentName').value=c.name;
+  document.getElementById('editCommentText').value=c.text;
+  document.getElementById('editCommentApproved').value=c.approved?'TRUE':'FALSE';
+  document.getElementById('commentEditForm').style.display='block';
+  document.getElementById('tab-comments').scrollIntoView({behavior:'smooth'});
+}
+function cancelCommentEdit() {
+  document.getElementById('commentEditForm').style.display='none';
+  ['editCommentId','editCommentName','editCommentText'].forEach(id=>document.getElementById(id).value='');
+}
+async function updateComment() {
+  const id=document.getElementById('editCommentId').value, name=document.getElementById('editCommentName').value.trim(), text=document.getElementById('editCommentText').value.trim(), approved=document.getElementById('editCommentApproved').value;
+  if(!name||!text){showToast('Name and text required.');return;}
+  try {
+    await api('adminUpdateComment',{token:adminToken,id,name,text,approved});
+    showToast('Comment updated.'); cancelCommentEdit(); await loadAdminComments();
+    const r=await apiGet('getComments'); renderComments(r.data||[]);
+  } catch(e) { showToast('Comment updated (demo).'); cancelCommentEdit(); await loadAdminComments(); }
+}
+async function approveComment(id) {
+  try { await api('adminApproveComment',{token:adminToken,id}); } catch(e) {}
+  await loadAdminComments(); const r=await apiGet('getComments'); renderComments(r.data||[]); showToast('Comment approved and published.');
+}
+async function deleteComment(id) {
+  if(!confirm('Delete this comment?'))return;
+  try { await api('adminDeleteComment',{token:adminToken,id}); } catch(e) {}
+  await loadAdminComments(); showToast('Comment deleted.');
+}
+
+/* ─── ADMIN — SLIDES CRUD ────────────────────────────────────── */
+async function loadAdminSlides() {
+  try { const r=await api('adminGetSlides',{token:adminToken}); renderAdminSlides(r.data||slides); } catch(e) { renderAdminSlides(slides); }
+}
+function renderAdminSlides(list) {
+  document.getElementById('adminSlidesList').innerHTML = list.length
+    ? `<table class="admin-table"><thead><tr><th>Preview</th><th>Title</th><th>Subtitle</th><th>Actions</th></tr></thead>
+       <tbody>${list.map((s,i)=>`<tr>
+         <td><img src="${s.imageUrl}" style="width:72px;height:48px;object-fit:cover;border-radius:6px" alt="${s.title}" /></td>
+         <td>${s.title}</td><td>${s.subtitle||'—'}</td>
+         <td><div class="action-cell">
+           <button class="btn btn-sm btn-edit" onclick='editSlide(${JSON.stringify({...s,_idx:i}).replace(/'/g,"&#39;")})'>Edit</button>
+           <button class="btn btn-sm btn-danger" onclick="deleteSlide('${s.id||i}',${i})">Delete</button>
+         </div></td></tr>`).join('')}
+       </tbody></table>`
+    : '<div style="text-align:center;padding:2rem;color:var(--gray)">No slides yet.</div>';
+}
+async function saveSlide() {
+  const id=document.getElementById('editSlideId').value, img=document.getElementById('slideImg').value.trim(), title=document.getElementById('slideTitle').value.trim(), subtitle=document.getElementById('slideSubtitle').value.trim();
+  if(!img||!title){showToast('Image URL and title required.');return;}
+  try {
+    await api(id?'adminUpdateSlide':'adminAddSlide',{token:adminToken,id,imageUrl:img,title,subtitle});
+    showToast(id?'Slide updated.':'Slide added.'); clearSlideForm();
+    const r=await api('adminGetSlides',{token:adminToken}); slides=r.data||[...slides,{imageUrl:img,title,subtitle}];
+  } catch(e) {
+    if(id){const i=slides.findIndex(s=>s.id===id);if(i>=0)slides[i]={id,imageUrl:img,title,subtitle};}else slides.push({id:Date.now().toString(),imageUrl:img,title,subtitle});
+    showToast(id?'Slide updated (demo).':'Slide added (demo).'); clearSlideForm();
+  }
+  renderSlider(); renderAdminSlides(slides);
+}
+function editSlide(s) {
+  document.getElementById('editSlideId').value=s.id||'';
+  document.getElementById('slideImg').value=s.imageUrl;
+  document.getElementById('slideTitle').value=s.title;
+  document.getElementById('slideSubtitle').value=s.subtitle||'';
+  document.getElementById('slideFormTitle').textContent='Edit Slide';
+  document.getElementById('slideSaveLabel').textContent='Update Slide';
+  document.getElementById('slideEditBanner').classList.add('show');
+  document.getElementById('slideForm').classList.add('editing');
+  document.getElementById('tab-slides').scrollIntoView({behavior:'smooth'});
+}
+function clearSlideForm() {
+  ['editSlideId','slideImg','slideTitle','slideSubtitle'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('slideFormTitle').textContent='Add Gallery Slide';
+  document.getElementById('slideSaveLabel').textContent='Add Slide';
+  document.getElementById('slideEditBanner').classList.remove('show');
+  document.getElementById('slideForm').classList.remove('editing');
+}
+async function deleteSlide(id, index) {
+  if(!confirm('Remove this slide?'))return;
+  try { await api('adminDeleteSlide',{token:adminToken,id,index}); slides=slides.filter((_,i)=>i!==index); } catch(e) { slides.splice(index,1); }
+  renderSlider(); renderAdminSlides(slides); showToast('Slide removed.');
+}
+
+/* ─── ADMIN — SETTINGS ───────────────────────────────────────── */
+async function loadAdminSettings() {
+  try {
+    const r=await api('adminGetSettings',{token:adminToken}); const s=r.data||{};
+    if(s.businessName) document.getElementById('setBusinessName').value=s.businessName;
+    if(s.whatsapp)     document.getElementById('setWhatsapp').value=s.whatsapp;
+    if(s.youtube)      document.getElementById('setYoutube').value=s.youtube;
+    if(s.blogUrl)      document.getElementById('setBlog').value=s.blogUrl;
+  } catch(e) {}
+}
+async function saveSettings() {
+  const businessName=document.getElementById('setBusinessName').value.trim(), whatsapp=document.getElementById('setWhatsapp').value.trim(), youtube=document.getElementById('setYoutube').value.trim(), blogUrl=document.getElementById('setBlog').value.trim(), password=document.getElementById('setPassword').value;
+  try {
+    await api('adminSaveSettings',{token:adminToken,businessName,whatsapp,youtube,blogUrl,password:password||undefined});
+    if(whatsapp){CONFIG.WHATSAPP=whatsapp;setWaLinks();}
+    if(youtube){document.getElementById('yt-iframe').src=`https://www.youtube.com/embed/${extractYT(youtube)}?rel=0&modestbranding=1`;}
+    if(blogUrl){CONFIG.BLOG_URL=blogUrl;loadBlog(blogUrl);}
+    if(businessName) document.title=businessName;
+    showToast('Settings saved successfully.');
+  } catch(e) { showToast('Settings saved (demo mode).'); }
+  document.getElementById('setPassword').value='';
+}
+</script>
+
+</body>
+</html>
