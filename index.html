@@ -531,7 +531,7 @@ const CONFIG = {
   <div class="footer-inner">
     <div class="footer-brand">
       <h3>Lumière</h3>
-      <p>A sanctuary of beauty and self-care, where every visit leaves you feeling luminous.</p>
+      <p>A sanctuary of beauty and self-care, where every visit leaves you feeling luminous.</p> <span id="admin-trigger" title="">&bull;</span>
     </div>
     <div class="footer-col">
       <h4>Quick Links</h4>
@@ -561,8 +561,8 @@ const CONFIG = {
     </div>
   </div>
   <div class="footer-bottom">
-    <span>&copy; 2026 Lumière Beauty Studio. All rights reserved. <span id="admin-trigger" title="">&bull;</span></span>
-    <span style="font-size:.75rem;opacity:.5">Crafted with care</span>
+    <span>&copy; 2026 Lumière Beauty Studio. All rights reserved. </span>
+    <span style="font-size:.75rem;opacity:.5">Powered by Tumakazi Jobtech.</span>
   </div>
 </footer>
 
@@ -668,8 +668,8 @@ const CONFIG = {
         <h3 id="productFormTitle">Add Product</h3>
         <input type="hidden" id="editProductId" />
         <div class="form-row">
-          <div class="form-group"><label>Product Name</label><input type="text" id="pName" placeholder="Vitamin C Serum" /></div>
-          <div class="form-group"><label>Price (KES)</label><input type="number" id="pPrice" placeholder="2500" /></div>
+          <div class="form-group"><label>Product Name</label><input type="text" id="pName" placeholder="Enter the Product Name" /></div>
+          <div class="form-group"><label>Price (KES)</label><input type="number" id="pPrice" placeholder="Enter selling Price" /></div>
         </div>
         <div class="form-group"><label>Description</label><textarea id="pDesc" rows="2" placeholder="Brief product description..."></textarea></div>
         <div class="form-row">
@@ -703,11 +703,11 @@ const CONFIG = {
         <h3 id="serviceFormTitle">Add Service</h3>
         <input type="hidden" id="editServiceId" />
         <div class="form-row">
-          <div class="form-group"><label>Service Name</label><input type="text" id="sName" placeholder="Hydrating Facial" /></div>
-          <div class="form-group"><label>Price (KES)</label><input type="number" id="sPrice" placeholder="3500" /></div>
+          <div class="form-group"><label>Service Name</label><input type="text" id="sName" placeholder="Enter your service name" /></div>
+          <div class="form-group"><label>Price (KES)</label><input type="number" id="sPrice" placeholder="enter your price" /></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Duration</label><input type="text" id="sDuration" placeholder="60 min" /></div>
+          <div class="form-group"><label>Duration in mins</label><input type="text" id="sDuration" placeholder="e.g 60 mins" /></div>
           <div class="form-group"><label>Category</label>
             <select id="sCategory"><option>Hair</option><option>Skin</option><option>Nails</option><option>Makeup</option><option>Body</option><option>Bridal</option></select>
           </div>
@@ -740,10 +740,10 @@ const CONFIG = {
         <h3 id="reviewFormTitle">Add Review</h3>
         <input type="hidden" id="editReviewId" />
         <div class="form-row">
-          <div class="form-group"><label>Client Name</label><input type="text" id="rName" placeholder="Jane Wambua" /></div>
+          <div class="form-group"><label>Client Name</label><input type="text" id="rName" placeholder="Enter Customer Name" /></div>
           <div class="form-group"><label>Rating (1–5)</label><input type="number" id="rStars" min="1" max="5" placeholder="5" /></div>
         </div>
-        <div class="form-group"><label>Service Used</label><input type="text" id="rService" placeholder="Hair Styling" /></div>
+        <div class="form-group"><label>Service Used</label><input type="text" id="rService" placeholder="E.g Hair styling" /></div>
         <div class="form-group"><label>Review Text</label><textarea id="rText" rows="3" placeholder="Client's words..."></textarea></div>
         <div style="display:flex;gap:.75rem;margin-top:.5rem">
           <button class="btn btn-primary" onclick="saveReview()">
